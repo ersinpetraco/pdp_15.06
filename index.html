@@ -1,608 +1,612 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ACME — Petra Roasting Co.</title>
+<title>Petra — ACME Product Page (Final)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --paper: #f3eee4;
-    --paper-2: #ece5d7;
-    --ink: #161412;
-    --ink-soft: #6f675c;
-    --rule: #d9d2c6;
-    --rule-dark: #b8af9f;
-    --mono: 'Courier New', Courier, monospace;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    * { transition: none !important; animation: none !important; }
-  }
-  body {
-    font-family: var(--mono);
-    background: var(--paper);
-    color: var(--ink);
-    -webkit-font-smoothing: antialiased;
-    font-size: 14px;
-    line-height: 1.7;
-  }
-  a { color: var(--ink); }
-  button { font-family: var(--mono); cursor: pointer; }
-  button:focus-visible, select:focus-visible, a:focus-visible, summary:focus-visible {
-    outline: 2px solid var(--ink); outline-offset: 2px;
-  }
-  .label {
-    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--ink-soft);
-  }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f5f1ec;--card:#fff;--dark:#1c1917;--mid:#57534e;--light:#a8a29e;--inv:#f5f1ec;--brd:#e7e0d8;--brdd:#d6cec4;--green:#4d7c0f;--gbg:#ecfccb;--amber:#b45309;--abg:#fef3c7;--blue:#1d4ed8;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Outfit',-apple-system,sans-serif}
+::selection{background:var(--dark);color:var(--bg)}
+body{font-family:var(--sans);color:var(--dark);background:var(--bg);-webkit-font-smoothing:antialiased}
+[contenteditable]{outline:none;border-radius:3px;transition:background .2s}
+[contenteditable]:hover{background:rgba(180,83,9,.06)}
+[contenteditable]:focus{background:rgba(180,83,9,.1);box-shadow:0 0 0 2px rgba(180,83,9,.2)}
+@keyframes ck{from{stroke-dashoffset:24}to{stroke-dashoffset:0}}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.a0{animation:fu .5s cubic-bezier(.22,1,.36,1) both}
+.a1{animation:fu .5s cubic-bezier(.22,1,.36,1) .06s both}
+.a2{animation:fu .5s cubic-bezier(.22,1,.36,1) .12s both}
+.a3{animation:fu .5s cubic-bezier(.22,1,.36,1) .18s both}
+.a4{animation:fu .5s cubic-bezier(.22,1,.36,1) .24s both}
+.a5{animation:fu .5s cubic-bezier(.22,1,.36,1) .30s both}
 
-  /* ───── top bar ───── */
-  .topbar {
-    border-bottom: 1px solid var(--ink);
-    padding: 14px 32px;
-    display: flex; justify-content: space-between; align-items: center;
-    background: var(--paper);
-  }
-  .wordmark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .wordmark span { font-size: 15px; font-weight: 700; letter-spacing: 0.32em; }
-  .moon { width: 16px; height: 16px; }
-  .topbar nav { display: flex; gap: 26px; }
-  .topbar nav a { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; }
-  .topbar nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
-  .crumb { padding: 14px 32px; font-size: 11px; color: var(--ink-soft); border-bottom: 1px solid var(--rule); }
-  .crumb a { color: var(--ink-soft); text-decoration: none; }
-  .crumb a:hover { color: var(--ink); }
+.edit-banner{background:linear-gradient(90deg,#b45309,#d97706);color:#fff;padding:10px 20px;font-size:12px;text-align:center;font-weight:500;position:sticky;top:0;z-index:100}
+.topbar{background:var(--dark);color:var(--light);padding:9px 24px;font-size:10px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;text-align:center}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 40px;border-bottom:1px solid var(--brd)}
+.logo{font-family:var(--serif);font-size:26px;font-weight:500;color:var(--dark);text-decoration:none}
+.nv,.ne{display:flex;gap:28px}
+.nv a,.ne a{font-size:11px;font-weight:500;letter-spacing:1.8px;text-transform:uppercase;color:var(--mid);text-decoration:none;transition:color .2s}
+.nv a:hover,.ne a:hover{color:var(--dark)}
+.crumb{padding:10px 40px 0;font-size:11px;color:var(--light)}
+.crumb a{color:var(--light);text-decoration:none}
 
-  /* ───── main grid ───── */
-  .main {
-    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    max-width: 1180px; margin: 0 auto;
-  }
-  .visual {
-    border-right: 1px solid var(--rule);
-    padding: 48px;
-    display: flex; align-items: flex-start; justify-content: center;
-  }
-  .visual-inner { position: sticky; top: 48px; width: 100%; max-width: 460px; }
-  .bag-frame {
-    border: 1px solid var(--ink);
-    background: var(--paper-2);
-    aspect-ratio: 4 / 5;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 18px; position: relative;
-  }
-  .bag-frame svg { width: 84px; height: 84px; }
-  .bag-frame .bag-name { font-size: 26px; font-weight: 700; letter-spacing: 0.4em; margin-left: 0.4em; }
-  .bag-frame .bag-sub { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft); }
-  .photo-note {
-    position: absolute; bottom: 12px; left: 0; right: 0; text-align: center;
-    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rule-dark);
-  }
-  .roast-stamp {
-    margin-top: 14px; display: flex; justify-content: space-between;
-    font-size: 11px; color: var(--ink-soft);
-    border-bottom: 1px solid var(--rule); padding-bottom: 10px;
-  }
-  .roast-stamp strong { color: var(--ink); font-weight: 700; }
+/* Grid */
+.grid{display:grid;grid-template-columns:1.1fr 1fr;max-width:1280px;margin:0 auto;padding:32px 40px 80px}
+.imgs{position:sticky;top:48px;align-self:start;padding-right:48px}
+.img-main{border-radius:10px;overflow:hidden;position:relative;background:var(--card)}
+.img-main img{width:100%;height:auto;display:block}
+.img-main img.hid{display:none}
+.badge-r{position:absolute;top:16px;left:16px;background:rgba(28,25,23,.88);backdrop-filter:blur(10px);color:var(--inv);padding:5px 14px;border-radius:100px;font-size:9.5px;font-weight:500;letter-spacing:2px;text-transform:uppercase}
+.thumb-row{display:flex;gap:10px;margin-top:12px}
+.thumb{width:72px;height:90px;border-radius:6px;overflow:hidden;cursor:pointer;border:2px solid transparent;opacity:.6;transition:all .2s}
+.thumb.on{border-color:var(--dark);opacity:1}
+.thumb img{width:100%;height:100%;object-fit:cover}
 
-  /* ───── buy column ───── */
-  .buy { padding: 48px 48px 64px; }
-  .tagline-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
-  .tag {
-    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-    border: 1px solid var(--ink); padding: 3px 10px;
-  }
-  h1 { font-size: 52px; font-weight: 700; letter-spacing: 0.14em; line-height: 1; margin-bottom: 14px; }
-  .tagline { font-size: 14px; color: var(--ink-soft); max-width: 46ch; margin-bottom: 22px; }
-  .notes { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-  .note-pill {
-    font-size: 11px; letter-spacing: 0.08em;
-    background: var(--ink); color: var(--paper);
-    padding: 4px 14px; border-radius: 999px;
-  }
-  .notes-line { font-size: 12.5px; color: var(--ink-soft); font-style: italic; margin-bottom: 26px; max-width: 48ch; }
+.info{max-width:500px}
+.pname{font-family:var(--serif);font-size:46px;font-weight:500;letter-spacing:-.5px;line-height:1.05;margin-bottom:8px}
+.ptag{font-size:14.5px;color:var(--mid);line-height:1.55;font-weight:300}
+.taste-pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:22px}
+.tp{padding:5px 12px;border:1px solid var(--brdd);border-radius:100px;font-size:9.5px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:var(--mid);transition:all .25s;cursor:default}
+.tp:hover{background:var(--dark);color:var(--inv);border-color:var(--dark)}
+.meta-line{margin-top:12px;font-size:11.5px;color:var(--light);display:flex;align-items:center;gap:6px}
+.meta-line .ml-lbl{letter-spacing:1.5px;text-transform:uppercase;font-size:9.5px}
+.meta-line .ml-val{color:var(--mid);font-weight:500}
+.meta-line .ml-dot{color:var(--brdd);margin:0 2px}
+.hr{width:100%;height:1px;background:var(--brd);margin:24px 0}
+.lbl{font-size:10.5px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--light);margin-bottom:8px}
 
-  .meta-line {
-    border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule);
-    padding: 10px 0; margin-bottom: 28px;
-    display: flex; flex-wrap: wrap; gap: 6px 22px;
-    font-size: 11px; color: var(--ink-soft);
-  }
-  .meta-line b { color: var(--ink); font-weight: 700; }
+/* ===== SIZE: RADIO CARDS ===== */
+.size-cards{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.size-card{display:flex;align-items:center;gap:14px;border:1.5px solid var(--brd);border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .2s}
+.size-card:hover{border-color:var(--mid)}
+.size-card.on{border-color:var(--dark)}
+.sz-radio{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--brdd);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .2s}
+.size-card.on .sz-radio{border-color:var(--dark)}
+.sz-dot{width:8px;height:8px;border-radius:50%;background:var(--dark);transform:scale(0);transition:transform .2s}
+.size-card.on .sz-dot{transform:scale(1)}
+.sz-body{flex:1}
+.sz-title{display:flex;align-items:center;gap:8px}
+.sz-name{font-size:14px;font-weight:500;letter-spacing:.2px}
+.sz-badge{font-size:9px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;padding:3px 9px;border-radius:100px}
+.sz-badge-sand{background:#f5f0e8;color:#78716c}
+.sz-sub{font-size:11.5px;color:var(--light);margin-top:2px;font-weight:400}
+.sz-price-area{text-align:right;flex-shrink:0}
+.sz-price-row{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.sz-price{font-size:14px;font-weight:500;letter-spacing:.3px}
+.sz-save-pill{font-size:9.5px;font-weight:500;padding:2px 7px;border-radius:100px;background:var(--gbg);color:var(--green);transition:transform .18s ease}
+.sz-save-pill.bump{transform:scale(1.18)}
+.sz-strike{font-size:10.5px;color:var(--light);text-decoration:line-through;margin-top:2px}
+.sz-kg{font-size:10px;color:var(--light);margin-top:3px;letter-spacing:.3px}
+.tier-whisper{display:none;font-size:12px;color:var(--mid);padding-top:9px;margin:-2px 0 14px;border-top:1px solid var(--brd);animation:fi .3s ease}
+.tier-whisper.vis{display:block}
+.tier-whisper strong{color:var(--dark);font-weight:600}
+.tier-whisper a{color:var(--dark);font-weight:500;text-decoration:none;border-bottom:1px solid var(--brdd);padding-bottom:1px}
+.stepper-btn:disabled{opacity:.3;cursor:default;pointer-events:none}
+@keyframes tflash{from{background:var(--gbg)}to{background:transparent}}
+.sz-sep{height:1px;background:var(--brd);margin-bottom:18px}
 
-  /* size cards */
-  .sizes { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-bottom: 10px; }
-  .size-card {
-    border: 1px solid var(--rule-dark); background: transparent;
-    padding: 14px 12px 12px; text-align: left; position: relative;
-    transition: border-color 0.15s ease;
-    display: flex; flex-direction: column; gap: 3px; min-height: 122px;
-  }
-  .size-card:hover { border-color: var(--ink); }
-  .size-card[aria-pressed="true"] { border: 2px solid var(--ink); padding: 13px 11px 11px; }
-  .size-card .sz { font-size: 16px; font-weight: 700; }
-  .size-card .sz-sub { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
-  .size-card .sz-price { font-size: 13px; margin-top: auto; }
-  .size-card .sz-compare { font-size: 11px; color: var(--ink-soft); text-decoration: line-through; margin-left: 6px; }
-  .size-card .sz-kg { font-size: 10px; color: var(--ink-soft); }
-  .adv-pill {
-    position: absolute; top: -9px; right: 8px;
-    font-size: 9.5px; letter-spacing: 0.08em;
-    background: var(--ink); color: var(--paper);
-    padding: 2px 9px; border-radius: 999px;
-    transition: transform 0.15s ease;
-  }
-  .adv-pill.bump { transform: scale(1.12); }
+/* Quantity stepper */
+.stepper-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.stepper-box{display:flex;align-items:center;border:1.5px solid var(--brd);border-radius:6px;overflow:hidden}
+.stepper-btn{width:36px;height:36px;border:none;background:transparent;font-size:16px;cursor:pointer;color:var(--mid);display:flex;align-items:center;justify-content:center;transition:background .15s;font-family:var(--sans)}
+.stepper-btn:hover{background:#ece7e0}
+.stepper-val{width:36px;text-align:center;font-size:14px;font-weight:500;color:var(--dark);background:transparent;border:none;font-family:var(--sans)}
+.stepper-info{font-size:12px;color:var(--light);font-weight:400}
 
-  /* stepper + nudge */
-  .qty-row { display: flex; align-items: center; gap: 14px; margin: 18px 0 0; }
-  .step-btn {
-    width: 38px; height: 38px; border: 1px solid var(--ink); background: transparent;
-    font-size: 16px; line-height: 1;
-  }
-  .step-btn:hover { background: var(--ink); color: var(--paper); }
-  .qty-num { min-width: 26px; text-align: center; font-size: 16px; font-weight: 700; }
-  .qty-label { font-size: 11px; color: var(--ink-soft); letter-spacing: 0.1em; text-transform: uppercase; }
-  .nudge {
-    margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--rule);
-    font-size: 12.5px; color: var(--ink-soft);
-    display: none;
-  }
-  .nudge.show { display: block; }
-  .nudge a { color: var(--ink); }
+/* Tier table (Option B) */
+.tier-table{width:100%;margin-top:10px;border-collapse:collapse;display:none}
+.tier-table.vis{display:table}
+.tier-table td{font-size:11.5px;padding:3px 0;color:var(--light)}
+.tier-table td:last-child{text-align:right;font-weight:500;color:var(--mid)}
+.tier-table tr.tt-active td{color:var(--mid)}
+.tier-table tr.tt-active td:last-child{color:var(--dark)}
+.tt-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--brdd);margin-right:7px;vertical-align:middle;transition:background .3s}
+.tt-dot.lit{background:var(--dark)}
+/* Shipping row */
+.ship-row{padding:7px 16px;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--light);border-top:1px solid var(--brd);transition:color .3s}
+.ship-row.done{color:var(--green)}
 
-  /* grind */
-  .field { margin: 26px 0 0; }
-  .field .label { display: block; margin-bottom: 8px; }
-  select {
-    width: 100%; font-family: var(--mono); font-size: 13px;
-    background: transparent; border: 1px solid var(--ink);
-    padding: 11px 12px; color: var(--ink); border-radius: 0;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23161412'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 14px center;
-  }
+/* Upgrade nudge */
+.upgrade-nudge{margin-top:12px;border-radius:8px;overflow:hidden;border:1px solid var(--brd);display:none;animation:fi .3s ease}
+.upgrade-nudge.vis{display:block}
+.un-body{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fafaf9}
+.un-text{font-size:12px;color:var(--mid);line-height:1.5;flex:1}
+.un-text strong{color:var(--dark);font-weight:600}
+.un-text .un-save{color:var(--green);font-weight:600}
+.un-cta{flex-shrink:0;padding:7px 14px;background:var(--dark);color:var(--inv);border:none;border-radius:6px;font-size:10.5px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;font-family:var(--sans);white-space:nowrap;transition:background .2s}
+.un-cta:hover{background:#3d3835}
 
-  /* CTA */
-  .cta {
-    width: 100%; margin-top: 26px;
-    background: var(--ink); color: var(--paper);
-    border: 1px solid var(--ink);
-    padding: 17px 18px;
-    font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
-    display: flex; justify-content: space-between; align-items: center;
-    transition: opacity 0.15s ease;
-  }
-  .cta:hover { opacity: 0.88; }
-  .cta .cta-total { font-weight: 700; letter-spacing: 0.04em; font-size: 15px; }
-  .ship-line { margin-top: 12px; font-size: 11.5px; color: var(--ink-soft); display: flex; justify-content: space-between; }
-  .ship-line .ok { color: var(--ink); font-weight: 700; }
+/* Cart frame shared */
+.cart-frame{margin-top:18px;border:1px solid var(--brd);border-radius:8px;overflow:hidden}
+.cart-frame:hover{border-color:var(--brdd)}
+.cart-btn{width:100%;background:var(--dark);padding:15px 20px;cursor:pointer;border:none;color:var(--inv);display:flex;justify-content:space-between;align-items:center;transition:all .25s;font-family:var(--sans)}
+.cart-btn:hover{background:#0c0a09}
+.cart-btn:active{transform:scale(.995)}
+.cart-btn.ok{background:var(--green);pointer-events:none}
+.cart-btn .cb-label{font-size:13px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase}
+.cart-btn .cb-price{font-size:15px;font-weight:500}
+.cart-sum{padding:10px 16px;display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--light)}
+.cart-sum .cs-save{color:var(--green);font-weight:500;font-size:11px}
 
-  /* details accordion */
-  .details-block { margin-top: 36px; border-top: 1px solid var(--ink); }
-  details { border-bottom: 1px solid var(--rule); }
-  summary {
-    list-style: none; cursor: pointer; padding: 13px 2px;
-    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  summary::-webkit-details-marker { display: none; }
-  summary::after { content: '+'; font-size: 14px; }
-  details[open] summary::after { content: '–'; }
-  .dt-grid { padding: 4px 2px 18px; display: grid; grid-template-columns: 140px 1fr; gap: 6px 18px; font-size: 12.5px; }
-  .dt-grid dt { color: var(--ink-soft); }
-  .dt-grid dd { font-weight: 700; }
-  .dt-note { grid-column: 1 / -1; font-size: 11.5px; color: var(--ink-soft); font-style: italic; padding-top: 8px; border-top: 1px solid var(--rule); margin-top: 6px; }
-  .detail-prose { padding: 4px 2px 18px; font-size: 12.5px; color: var(--ink-soft); max-width: 52ch; }
 
-  /* ───── lower sections ───── */
-  .section { max-width: 1180px; margin: 0 auto; padding: 64px 48px; border-top: 1px solid var(--ink); }
-  .section-head { margin-bottom: 32px; }
-  .section-head h2 { font-size: 24px; font-weight: 700; letter-spacing: 0.1em; margin-top: 6px; }
-  .desc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
-  .desc-grid p { margin-bottom: 18px; max-width: 54ch; }
-  .desc-close { font-style: italic; color: var(--ink-soft); border-left: 2px solid var(--ink); padding-left: 16px; }
+/* Grind */
+.gw{position:relative;margin-top:16px}
+.gt{width:100%;padding:11px 16px;border:1.5px solid var(--brdd);border-radius:6px;background:transparent;font-family:var(--sans);font-size:13px;color:var(--dark);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all .2s}
+.gt:hover{border-color:var(--mid)}
+.gt.op{border-color:var(--dark)}
+.gt svg{transition:transform .3s}
+.gt.op svg{transform:rotate(180deg)}
+.gdd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--bg);border:1.5px solid var(--brdd);border-radius:6px;z-index:10;max-height:280px;overflow-y:auto;display:none}
+.gdd.op{display:block}
+.go{padding:10px 16px;font-size:13px;color:var(--mid);cursor:pointer;transition:all .12s;border-bottom:1px solid var(--brd)}
+.go:last-child{border-bottom:none}
+.go:hover{background:#ece7e0;color:var(--dark)}
+.go.on{color:var(--dark);font-weight:500}
 
-  /* brew tabs */
-  .brew-tabs { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--ink); margin-bottom: 0; }
-  .brew-tab {
-    flex: 1; min-width: 110px; background: transparent; border: none;
-    border-right: 1px solid var(--rule-dark);
-    padding: 12px 8px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-  }
-  .brew-tab:last-child { border-right: none; }
-  .brew-tab[aria-selected="true"] { background: var(--ink); color: var(--paper); }
-  .brew-panel {
-    border: 1px solid var(--ink); border-top: none;
-    display: grid; grid-template-columns: repeat(6, minmax(0,1fr));
-  }
-  .brew-cell { padding: 18px 14px; border-right: 1px solid var(--rule); }
-  .brew-cell:last-child { border-right: none; }
-  .brew-cell .label { display: block; margin-bottom: 6px; }
-  .brew-cell .val { font-size: 15px; font-weight: 700; }
-  .brew-tip { margin-top: 14px; font-size: 12.5px; color: var(--ink-soft); font-style: italic; }
+/* ATC handled by cart-a / cart-c above */
 
-  /* related */
-  .rel-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
-  .rel-card { border: 1px solid var(--rule-dark); padding: 0; text-decoration: none; display: block; transition: border-color 0.15s ease; }
-  .rel-card:hover { border-color: var(--ink); }
-  .rel-thumb {
-    aspect-ratio: 5 / 4; background: var(--paper-2); border-bottom: 1px solid var(--rule-dark);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rule-dark);
-  }
-  .rel-body { padding: 16px; }
-  .rel-body h3 { font-size: 14px; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px; }
-  .rel-body .rel-notes { font-size: 12px; color: var(--ink-soft); font-style: italic; margin-bottom: 10px; min-height: 38px; }
-  .rel-body .rel-price { font-size: 12px; }
+/* Desc */
+.desc{margin-top:40px}
+.desc p{font-size:14px;line-height:1.8;color:var(--mid);font-weight:300}
+.desc .it{font-style:italic;margin-top:8px;color:var(--light);font-size:13px}
 
-  footer {
-    border-top: 1px solid var(--ink); margin-top: 0;
-    padding: 28px 48px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
-  }
+/* Details */
+.dets{margin-top:44px}
+.dh{font-size:10.5px;letter-spacing:3px;text-transform:uppercase;color:var(--light);margin-bottom:14px;font-weight:500}
+.dr{padding:13px 0;border-bottom:1px solid var(--brd);cursor:pointer;transition:padding-left .2s}
+.dr:first-of-type{border-top:1px solid var(--brd)}
+.dr:hover{padding-left:4px}
+.drh{display:flex;justify-content:space-between;align-items:center}
+.dl{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--light)}
+.dval{font-size:13.5px;color:var(--dark);font-weight:500;display:flex;align-items:center;gap:6px}
+.chevron{width:10px;height:10px;stroke:var(--light);fill:none;stroke-width:2;transition:transform .3s}
+.dr.open .chevron{transform:rotate(180deg)}
+.dx{margin-top:10px;font-size:13px;color:var(--light);line-height:1.7;font-weight:300;display:none}
+.dr.open .dx{display:block;animation:fi .3s ease}
 
-  @media (max-width: 920px) {
-    .main { grid-template-columns: 1fr; }
-    .visual { border-right: none; border-bottom: 1px solid var(--rule); padding: 32px; }
-    .visual-inner { position: static; }
-    .buy { padding: 32px 24px 48px; }
-    h1 { font-size: 40px; }
-    .desc-grid { grid-template-columns: 1fr; gap: 0; }
-    .brew-panel { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    .brew-cell:nth-child(3n) { border-right: none; }
-    .brew-cell { border-bottom: 1px solid var(--rule); }
-    .rel-grid { grid-template-columns: 1fr; }
-    .section { padding: 48px 24px; }
-    .topbar, .crumb { padding-left: 24px; padding-right: 24px; }
-    footer { padding: 24px; }
-  }
-  @media (max-width: 560px) {
-    .sizes { grid-template-columns: 1fr; }
-    .size-card { min-height: 0; }
-  }
+/* Brew */
+.bw{margin-top:48px}
+.bts{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap}
+.bt{padding:6px 14px;border:1.5px solid var(--brd);background:transparent;font-family:var(--sans);font-size:10.5px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--mid);cursor:pointer;border-radius:100px;transition:all .2s}
+.bt.on{background:var(--dark);color:var(--inv);border-color:var(--dark)}
+.bt:not(.on):hover{border-color:var(--mid)}
+.bg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.bc{background:transparent;border-radius:8px;padding:16px 12px;border:1px solid var(--brdd)}
+.bcl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--light);margin-bottom:4px;font-weight:500}
+.bcv{font-size:16px;font-family:var(--serif);font-weight:500;color:var(--dark)}
+
+/* Related */
+.rel{background:var(--card);padding:64px 40px 72px;border-top:1px solid var(--brd)}
+.ri{max-width:1280px;margin:0 auto}
+.rh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px}
+.rh h2{font-family:var(--serif);font-size:26px;font-weight:500}
+.rh a{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--mid);text-decoration:none;border-bottom:1px solid var(--brdd);padding-bottom:2px}
+.rgr{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.rc{cursor:pointer;transition:transform .3s}
+.rc:hover{transform:translateY(-4px)}
+.rcw{border-radius:8px;overflow:hidden;position:relative;margin-bottom:10px;background:var(--bg)}
+.rcw img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;transition:filter .3s}
+.rc:hover .rcw img{filter:brightness(1.04)}
+.rtg{position:absolute;top:10px;left:10px;color:#fff;padding:3px 9px;border-radius:100px;font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+.rn{font-size:13.5px;font-weight:500;margin-bottom:2px;line-height:1.35}
+.rtst{font-size:11px;color:var(--light);margin-bottom:4px}
+.rpr{font-size:13px;font-weight:500}
+
+/* Footer */
+.ft{background:var(--dark);color:var(--light);padding:48px 40px}
+.fti{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;max-width:1280px;margin:0 auto;font-size:12px;line-height:2}
+.fl{font-family:var(--serif);font-size:24px;color:var(--inv);margin-bottom:12px;font-weight:500}
+.fd{max-width:260px;line-height:1.7;font-size:13px;color:#78716c;font-weight:300}
+.fc{color:var(--inv);font-size:9.5px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-weight:500}
+.ft a{color:var(--light);text-decoration:none;display:block;font-weight:300}
+.fb{background:#0c0a09;color:#57534e;padding:14px 40px;font-size:10.5px;text-align:center;font-weight:300}
+
+@media(max-width:920px){
+  .grid{grid-template-columns:1fr}
+  .imgs{position:relative;top:auto;padding-right:0;margin-bottom:32px}
+  .rgr{grid-template-columns:1fr 1fr}
+  .fti{grid-template-columns:1fr 1fr}
+  nav,.crumb,.grid,.rel,.ft{padding-left:20px;padding-right:20px}
+  .pname{font-size:36px}
+  .nv{display:none}
+}
+@media(max-width:540px){.fti{grid-template-columns:1fr}.rh{flex-direction:column;gap:10px}.bg{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <a class="wordmark" href="#" aria-label="Petra Roasting Co. ana sayfa">
-    <svg class="moon" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="#161412"/>
-    </svg>
-    <span>PETRA</span>
-  </a>
-  <nav aria-label="Ana menü">
-    <a href="#">Dükkan</a>
-    <a href="#">Kafeler</a>
-    <a href="#">Jurnal</a>
-    <a href="#">Toptan Alım</a>
-  </nav>
-</header>
+<div class="edit-banner">✏️ Editable prototype — click any text to change it</div>
+<div class="topbar a0"><span contenteditable="true">Free shipping for orders over 1.650 ₺</span></div>
+<nav class="a0"><a href="#" class="logo">Petra</a><div class="nv"><a>Coffee</a><a>Shop</a><a>Cafés</a><a>Journal</a></div><div class="ne"><a>Search</a><a>Cart (0)</a></div></nav>
+<div class="crumb a1"><a>Home</a><span style="margin:0 7px">/</span><a>Coffee</a><span style="margin:0 7px">/</span><span style="color:var(--mid)">ACME</span></div>
 
-<div class="crumb"><a href="#">Dükkan</a> / <a href="#">Kahveler</a> / ACME</div>
+<div class="grid">
+<!-- ===== IMAGES ===== -->
+<div class="imgs a1">
+  <div class="img-main">
+    <img id="i0" src="https://www.petracoffee.com/cdn/shop/products/Petra_yeni_web_dukkan_gorsel_ACME.jpg?v=1645699920&width=1000" alt="ACME">
+    <img id="i1" class="hid" src="https://www.petracoffee.com/cdn/shop/products/500gr2-5.png?v=1676545386&width=1000" alt="ACME 500g">
+    <div class="badge-r" contenteditable="true">Medium Roast</div>
+  </div>
+  <div class="thumb-row">
+    <div class="thumb on" onclick="swI(0)"><img src="https://www.petracoffee.com/cdn/shop/products/Petra_yeni_web_dukkan_gorsel_ACME.jpg?v=1645699920&width=200"></div>
+    <div class="thumb" onclick="swI(1)"><img src="https://www.petracoffee.com/cdn/shop/products/500gr2-5.png?v=1676545386&width=200"></div>
+  </div>
+</div>
 
-<main class="main">
+<!-- ===== INFO ===== -->
+<div class="info">
 
-  <!-- ───────── VISUAL ───────── -->
-  <div class="visual">
-    <div class="visual-inner">
-      <div class="bag-frame">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="none" stroke="#161412" stroke-width="1"/>
-        </svg>
-        <div class="bag-name">ACME</div>
-        <div class="bag-sub">Petra Roasting Co. — Istanbul</div>
-        <div class="photo-note">[ ACME ürün fotoğrafı — gerçek görsel eklenecek ]</div>
-      </div>
-      <div class="roast-stamp">
-        <span>Kavrum tarihi: <strong id="roast-date">—</strong></span>
-        <span>2 iş günü içinde kargoda</span>
-      </div>
-    </div>
+  <!-- Layer 1: Identity -->
+  <div class="a1">
+    <h1 class="pname" contenteditable="true">ACME</h1>
+    <p class="ptag" contenteditable="true">Petra's everyday single origin — a rotating South American lot, chosen each season for richness, balance and drinkability.</p>
   </div>
 
-  <!-- ───────── BUY ───────── -->
-  <div class="buy">
-    <div class="tagline-row">
-      <span class="tag">Single origin</span>
-      <span class="tag">Açık–orta kavrum</span>
-      <span class="tag">Dönüşümlü lot</span>
+  <!-- Layer 2: Taste + Meta -->
+  <div class="a2">
+    <div class="taste-pills">
+      <span class="tp" contenteditable="true">Dark Chocolate</span>
+      <span class="tp" contenteditable="true">Stone Fruit</span>
+      <span class="tp" contenteditable="true">Honey Sweetness</span>
+      <span class="tp" contenteditable="true">Smooth Body</span>
     </div>
-
-    <h1>ACME</h1>
-    <p class="tagline">Petra'nın her güne eşlik eden single origin'i — Güney Amerika'dan, zenginliği ve dengesi için seçilmiş, sezonla birlikte dönen bir lot.</p>
-
-    <div class="notes" aria-label="Tat notaları">
-      <span class="note-pill">Çikolata</span>
-      <span class="note-pill">Meyve</span>
-      <span class="note-pill">Dengeli</span>
-    </div>
-    <p class="notes-line">Çikolatamsı bir gövdeyle açılıp sessiz bir meyve tatlılığıyla biten, her sabaha uyan bir fincan.</p>
-
     <div class="meta-line">
-      <span>Köken: <b>Güney Amerika (dönüşümlü)</b></span>
-      <span>Demleme: <b>Espresso &amp; filtre</b></span>
-      <span>İşleme: <b>Lota göre değişir</b></span>
+      <span class="ml-lbl">Process</span>
+      <span class="ml-val" contenteditable="true">Washed</span>
+      <span class="ml-dot">·</span>
+      <span class="ml-lbl">Best for</span>
+      <span class="ml-val" contenteditable="true">Filter & Espresso</span>
+      <span class="ml-dot">·</span>
+      <span class="ml-lbl">Roasted</span>
+      <span class="ml-val" id="roastDate">—</span>
+    </div>
+  </div>
+
+  <div class="hr"></div>
+
+  <!-- Layer 4: SIZE SELECTOR (Radio Cards + Pill Tiers) -->
+  <div class="a3" id="sizeArea">
+    <div class="lbl">Size</div>
+    <div class="size-cards">
+      <div class="size-card on" id="card250" onclick="selSize('250')">
+        <div class="sz-radio"><div class="sz-dot"></div></div>
+        <div class="sz-body">
+          <div class="sz-title"><span class="sz-name" contenteditable="true">250g</span></div>
+          <div class="sz-sub" contenteditable="true">Fresh in every bag</div>
+        </div>
+        <div class="sz-price-area"><div class="sz-price">675 ₺</div></div>
+      </div>
+      <div class="size-card" id="card500" onclick="selSize('500')">
+        <div class="sz-radio"><div class="sz-dot"></div></div>
+        <div class="sz-body">
+          <div class="sz-title">
+            <span class="sz-name" contenteditable="true">500g</span>
+            <span class="sz-badge sz-badge-sand">Refil Paket</span>
+          </div>
+          <div class="sz-sub" contenteditable="true">Same coffee, less packaging</div>
+        </div>
+        <div class="sz-price-area">
+          <div class="sz-price-row"><span class="sz-price">1.215 ₺</span><span class="sz-save-pill">−10%</span></div>
+        </div>
+      </div>
+      <div class="size-card" id="card2500" onclick="selSize('2500')">
+        <div class="sz-radio"><div class="sz-dot"></div></div>
+        <div class="sz-body">
+          <div class="sz-title">
+            <span class="sz-name" contenteditable="true">2.5 kg</span>
+            <span class="sz-badge sz-badge-sand">Stok Paketi</span>
+          </div>
+          <div class="sz-sub" contenteditable="true">Ev veya ofis için büyük stok · 2 pakette −15%</div>
+        </div>
+        <div class="sz-price-area">
+          <div class="sz-price-row"><span class="sz-price" id="price2500">6.075 ₺</span><span class="sz-save-pill" id="tierPill">−10%</span></div>
+          <div class="sz-kg" id="kg2500">2.430 ₺ / kg</div>
+        </div>
+      </div>
     </div>
 
-    <!-- size cards -->
-    <span class="label" style="display:block; margin-bottom:10px;">Boy seç</span>
-    <div class="sizes" role="group" aria-label="Paket boyu">
-      <button class="size-card" id="card-250" aria-pressed="true" onclick="setSize(250)">
-        <span class="sz">250 g</span>
-        <span class="sz-sub">Keşif boyu</span>
-        <span class="sz-price"><span id="p-250">675 ₺</span></span>
-      </button>
-      <button class="size-card" id="card-500" aria-pressed="false" onclick="setSize(500)">
-        <span class="adv-pill">%10 avantaj</span>
-        <span class="sz">500 g</span>
-        <span class="sz-sub">Haftalık ritim</span>
-        <span class="sz-price">1.215 ₺<span class="sz-compare">1.350 ₺</span></span>
-      </button>
-      <button class="size-card" id="card-2500" aria-pressed="false" onclick="setSize(2500)">
-        <span class="adv-pill" id="tier-pill">%10 avantaj</span>
-        <span class="sz">2,5 kg</span>
-        <span class="sz-sub">Stok paketi</span>
-        <span class="sz-price"><span id="p-2500">6.075 ₺</span><span class="sz-compare">6.750 ₺</span></span>
-        <span class="sz-kg" id="kg-2500">2.430 ₺ / kg</span>
-      </button>
+    <div class="sz-sep"></div>
+
+    <div id="qArea">
+    <div class="lbl">Quantity</div>
+    <div class="stepper-row">
+      <div class="stepper-box">
+        <button class="stepper-btn" onclick="chgQ(-1)">−</button>
+        <input class="stepper-val" id="qVal" value="1" readonly>
+        <button class="stepper-btn" id="qPlus" onclick="chgQ(1)">+</button>
+      </div>
+      <div class="stepper-info" id="qInfo">1 bag · 250g</div>
     </div>
 
-    <!-- quantity + nudge -->
-    <div class="qty-row">
-      <span class="qty-label">Adet</span>
-      <button class="step-btn" onclick="setQty(-1)" aria-label="Adedi azalt">−</button>
-      <span class="qty-num" id="qty" aria-live="polite">1</span>
-      <button class="step-btn" onclick="setQty(1)" aria-label="Adedi artır">+</button>
-    </div>
-    <p class="nudge" id="nudge" aria-live="polite"></p>
+    <div class="tier-whisper" id="tierWhisper"><span id="twTxt"></span></div>
 
-    <!-- grind -->
-    <div class="field">
-      <label class="label" for="grind">Öğütüm</label>
-      <select id="grind">
-        <option>Çekirdek — öğütülmemiş</option>
-        <option>Espresso</option>
-        <option>Moka Pot</option>
-        <option>V60</option>
-        <option>Chemex</option>
-        <option>Aeropress</option>
-        <option>French Press</option>
-        <option>Filtre kahve makinesi</option>
-        <option>Cold Brew</option>
-        <option>Türk kahvesi</option>
-      </select>
+    <div class="upgrade-nudge" id="upgradeNudge">
+      <div class="un-body">
+        <div class="un-text" id="unText"></div>
+        <button class="un-cta" id="unCta">Değiştir →</button>
+      </div>
     </div>
+    </div>
+  </div>
 
-    <!-- CTA -->
-    <button class="cta" onclick="addToCart()">
-      <span>Sepete Ekle</span>
-      <span class="cta-total" id="cta-total">675 ₺</span>
+  <!-- Grind -->
+  <div class="gw a3">
+    <div class="lbl">Grind</div>
+    <button class="gt" id="gT" onclick="tG(event)"><span id="gL">Whole Bean</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#57534e" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="gdd" id="gD"></div>
+  </div>
+
+  <!-- Cart (button above, summary below, framed) -->
+  <div class="cart-frame a4" id="cartB">
+    <button class="cart-btn" id="aBtnB" onclick="aC()">
+      <span class="cb-label">Add to cart</span>
+      <span class="cb-price" id="sumTB">675 ₺</span>
     </button>
-    <p class="ship-line"><span id="ship-msg">Ücretsiz kargo için 575 ₺ daha</span><span class="label">Kargo eşiği 1.250 ₺</span></p>
-
-    <!-- details -->
-    <div class="details-block">
-      <details>
-        <summary>Kahve Detayları</summary>
-        <dl class="dt-grid">
-          <dt>Köken</dt><dd>Brezilya — Sul de Minas</dd>
-          <dt>Üretici</dt><dd>Fazenda Santa Clara</dd>
-          <dt>Varyete</dt><dd>Yellow Bourbon, Catuai</dd>
-          <dt>İşleme</dt><dd>Natural — kurutma yataklarında, meyvesiyle</dd>
-          <dt>Rakım</dt><dd>1.100–1.250 m</dd>
-          <dt>Hasat</dt><dd>2025/26</dd>
-          <dt>Kavrum profili</dt><dd>Açık–orta</dd>
-          <div class="dt-note">Köken sezonla birlikte döner; bu tablo her lotta güncellenir. Değişmeyen tek şey profil: zengin, çikolatamsı, dengeli.</div>
-        </dl>
-      </details>
-      <details>
-        <summary>Kargo &amp; Tazelik</summary>
-        <p class="detail-prose">Her sipariş kavrumdan sonraki ilk günlerde, tek yönlü valfli torbalarda yola çıkar. 1.250 ₺ ve üzeri siparişlerde kargo bizden. Kavrum tarihi her torbanın üzerinde yazar — raf değil, fırın mantığı.</p>
-      </details>
-      <details>
-        <summary>Stok Paketi &amp; Toptan</summary>
-        <p class="detail-prose">2,5 kg stok paketi evde çok tüketenler ve küçük ofisler için: tek pakette %10, 2 pakette %15, 4 pakette %20 avantaj. Daha fazlası gerekiyorsa — bar, restoran, ofis aboneliği — <a href="#">Toptan Alım</a> programımız tam bunun için var.</p>
-      </details>
+    <div class="cart-sum">
+      <span id="sumLB">1× ACME 250g · Whole Bean</span>
+      <span class="cs-save" id="sumSB"></span>
+    </div>
+    <div class="ship-row" id="shipRow">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <span id="shipTxt">975 ₺ daha — ücretsiz kargo</span>
     </div>
   </div>
-</main>
 
-<!-- ───────── DESCRIPTION ───────── -->
-<section class="section">
-  <div class="section-head">
-    <span class="label">Hikâye</span>
-    <h2>Her sezon yeniden sorulan bir soru</h2>
+  <!-- Layer 6: Description -->
+  <div class="desc a4">
+    <p contenteditable="true">ACME is Petra's everyday single origin — not a fixed blend, but a rotating South American lot chosen each season for the same reason every time: richness, balance, drinkability. What stays constant is the profile — a rich chocolatey body, smooth balanced acidity and a lingering sweetness. What changes is where it comes from. Whether you're pulling espresso or brewing a morning V60, ACME is designed to be your reliable everyday companion.</p>
+    <p class="it" contenteditable="true">Don't be afraid of the fruity notes — after all, coffee is a fruit too.</p>
   </div>
-  <div class="desc-grid">
-    <div>
-      <p>ACME basit bir soruyla başladı: şu anda elimize geçebilecek en iyi Güney Amerika kahvesi hangisi? Bugün hâlâ aynı soru — her sezon yeniden soruluyor.</p>
-      <p>İsim, tek bir çiftliği ya da sabit bir formülü işaret etmiyor. ACME, Petra'nın And Dağları ve ötesinden, o an en karakterli lota verdiği sözün adı. Sabit kalan, profil: zengin ve çikolatamsı bir gövde, yumuşak bir asidite, damakta kalan bir tatlılık. Değişen tek şey, geldiği yer.</p>
-    </div>
-    <div>
-      <p>Espressoda yuvarlak ve affedici; V60'ta, French Press'te, Moka Pot'ta da kendi evinde. Henüz specialty kahveyi sevdiğini bilmeyen biri için demliyorsan, buradan başla.</p>
-      <p class="desc-close">Her demleme yönteminde çalışır. Küçük hataları affeder. Her sabah aynı şekilde demleyip yine de bıkmayacağın bir kahve.</p>
-    </div>
-  </div>
-</section>
 
-<!-- ───────── BREW GUIDE ───────── -->
-<section class="section">
-  <div class="section-head">
-    <span class="label">Demleme rehberi</span>
-    <h2>ACME'yi nasıl demlemeli</h2>
+  <!-- Layer 7: Details -->
+  <div class="dets a5">
+    <div class="dh" contenteditable="true">Coffee Details</div>
+    <div id="dL"></div>
   </div>
-  <div class="brew-tabs" role="tablist" aria-label="Demleme yöntemleri">
-    <button class="brew-tab" role="tab" aria-selected="true" onclick="setBrew(0,this)">V60</button>
-    <button class="brew-tab" role="tab" aria-selected="false" onclick="setBrew(1,this)">Espresso</button>
-    <button class="brew-tab" role="tab" aria-selected="false" onclick="setBrew(2,this)">French Press</button>
-    <button class="brew-tab" role="tab" aria-selected="false" onclick="setBrew(3,this)">Moka Pot</button>
-    <button class="brew-tab" role="tab" aria-selected="false" onclick="setBrew(4,this)">Cold Brew</button>
-  </div>
-  <div class="brew-panel" id="brew-panel"></div>
-  <p class="brew-tip" id="brew-tip"></p>
-</section>
 
-<!-- ───────── RELATED ───────── -->
-<section class="section">
-  <div class="section-head">
-    <span class="label">ACME'yi sevdiysen</span>
-    <h2>Sıradaki fincan</h2>
+  <!-- Layer 8: Brew Guide -->
+  <div class="bw a5">
+    <div class="dh" contenteditable="true">Brew Guide</div>
+    <div class="bts" id="bT"></div>
+    <div class="bg" id="bG"></div>
   </div>
-  <div class="rel-grid">
-    <a class="rel-card" href="#">
-      <div class="rel-thumb">[ Görsel ]</div>
-      <div class="rel-body">
-        <h3>Guatemala Abraço</h3>
-        <p class="rel-notes">Fındık ve vanilyanın yumuşak sıcaklığıyla biten, cömert bir fincan.</p>
-        <p class="rel-price">750 ₺'den başlayan</p>
-      </div>
-    </a>
-    <a class="rel-card" href="#">
-      <div class="rel-thumb">[ Görsel ]</div>
-      <div class="rel-body">
-        <h3>Etiyopya Bildimoo Bensa Bombe #4</h3>
-        <p class="rel-notes">Limon kabuğu ferahlığı, fındıkla yere basan dolgun bir gövde.</p>
-        <p class="rel-price">1.150 ₺'den başlayan</p>
-      </div>
-    </a>
-    <a class="rel-card" href="#">
-      <div class="rel-thumb">[ Görsel ]</div>
-      <div class="rel-body">
-        <h3>3'lü Etiyopya Tadım Paketi</h3>
-        <p class="rel-notes">Evde cupping: üç lot, üç ayrı karakter, yan yana.</p>
-        <p class="rel-price">780 ₺</p>
-      </div>
-    </a>
-  </div>
-</section>
 
-<footer>
-  <span>Petra Roasting Co. — Istanbul</span>
-  <span>Kaçık Keçi Gıda San. ve Tic. A.Ş.</span>
-</footer>
+</div>
+</div>
+
+<!-- Related -->
+<div class="rel">
+<div class="ri">
+  <div class="rh">
+    <div><div class="lbl" style="margin-bottom:6px" contenteditable="true">If you like ACME</div><h2 contenteditable="true">You might also enjoy</h2></div>
+    <a href="#">View All Coffee →</a>
+  </div>
+  <div class="rgr" id="rG"></div>
+</div>
+</div>
+
+<!-- Footer -->
+<div class="ft"><div class="fti">
+  <div><div class="fl">Petra</div><div class="fd" contenteditable="true">Specialty coffee roasted in Istanbul. Direct trade, seasonal offerings, always fresh.</div></div>
+  <div><div class="fc">Shop</div><a>In Season Coffees</a><a>Cold Brew</a><a>Equipment</a><a>All Products</a></div>
+  <div><div class="fc">Petra</div><a>Our Story</a><a>Cafés</a><a>Wholesale</a><a>Journal</a></div>
+  <div><div class="fc">Help</div><a>FAQ</a><a>Shipping</a><a>Returns</a><a>Contact</a></div>
+</div></div>
+<div class="fb">© 2026 Petra Roasting Co.</div>
 
 <script>
-/* ════════ pricing model ════════
-   250g  : 675 ₺ — liste, indirim yok
-   500g  : 1.350 → 1.215 ₺ (sabit %10, adetten bağımsız)
-   2,5kg : 6.750 ₺ liste — kademeli: 1 paket %10 · 2+ %15 · 4+ %20
-   Üretimde: fiyatlar ve kademeler Shopify metafield'larından gelir. */
-const PRICES = { 250: 675, 500: 1215 };
-const LIST_2500 = 6750;
-const SHIP_LIMIT = 1250;
-const fmtN = n => Math.round(n).toLocaleString('tr-TR');
-const fmt = n => fmtN(n) + ' \u20BA';
-const tier = q => q >= 4 ? 20 : q >= 2 ? 15 : 10;
-
-const state = { size: 250, qty: 1 };
-
-function setSize(s) {
-  state.size = s;
-  [250, 500, 2500].forEach(x =>
-    document.getElementById('card-' + x).setAttribute('aria-pressed', x === s ? 'true' : 'false')
-  );
-  render();
-}
-
-function setQty(d) {
-  state.qty = Math.max(1, state.qty + d);
-  render();
-}
-
-function unitPrice() {
-  if (state.size !== 2500) return PRICES[state.size];
-  return LIST_2500 * (1 - tier(state.qty) / 100);
-}
-
-function render() {
-  const q = state.qty;
-  const unit = unitPrice();
-  const total = unit * q;
-
-  document.getElementById('qty').textContent = q;
-  document.getElementById('cta-total').textContent = fmt(total);
-
-  /* — 2,5 kg kartı: evrilen rozet + canlı kg fiyatı (Seçenek 1) — */
-  const t = state.size === 2500 ? tier(q) : 10;
-  const per2500 = LIST_2500 * (1 - t / 100);
-  const pill = document.getElementById('tier-pill');
-  if (pill.textContent !== '%' + t + ' avantaj') {
-    pill.textContent = '%' + t + ' avantaj';
-    pill.classList.add('bump');
-    setTimeout(() => pill.classList.remove('bump'), 180);
-  }
-  document.getElementById('p-2500').textContent = fmt(per2500);
-  document.getElementById('kg-2500').textContent = fmtN(per2500 / 2.5) + ' \u20BA / kg';
-
-  /* — eşik fısıltısı: sadece 2,5 kg seçiliyken (Seçenek 3) — */
-  const nudge = document.getElementById('nudge');
-  if (state.size === 2500) {
-    nudge.classList.add('show');
-    if (q >= 4) {
-      nudge.innerHTML = 'En iyi fiyattas\u0131n \u2014 %20 avantaj. Daha fazlas\u0131 m\u0131 gerekiyor? <a href="#">Toptan Al\u0131m \u2192</a>';
-    } else if (q >= 2) {
-      nudge.textContent = (4 - q) + ' paket daha \u2192 %20';
-    } else {
-      nudge.textContent = '1 paket daha ekle \u2192 %15\u2019e ge\u00E7';
-    }
-  } else {
-    nudge.classList.remove('show');
-  }
-
-  /* — canlı kargo eşiği — */
-  const ship = document.getElementById('ship-msg');
-  if (total >= SHIP_LIMIT) {
-    ship.innerHTML = '<span class="ok">Kargo bizden \u2713</span>';
-  } else {
-    ship.textContent = '\u00DCcretsiz kargo i\u00E7in ' + fmt(SHIP_LIMIT - total) + ' daha';
-  }
-}
-
-function addToCart() {
-  /* Shopify entegrasyonu: variant id + quantity ile /cart/add.js */
-  const btn = document.querySelector('.cta span:first-child');
-  const old = btn.textContent;
-  btn.textContent = 'Sepete Eklendi \u2713';
-  setTimeout(() => { btn.textContent = old; }, 1600);
-}
-
-/* ════════ roast date (metafield placeholder: kavrum = bugün − 2 gün) ════════ */
-(function () {
-  const d = new Date(Date.now() - 2 * 864e5);
-  document.getElementById('roast-date').textContent =
-    d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
-})();
-
-/* ════════ brew guide ════════ */
-const BREW = [
-  { vals: ['15 g', '250 g', '1:16', 'Orta-ince', '94\u00B0C', '2:45'],
-    tip: '\u0130lk 45 saniyede 50 g suyla \u00F6n \u0131slatma \u2014 \u00E7ikolata notalar\u0131 burada a\u00E7\u0131l\u0131r.' },
-  { vals: ['18 g', '36 g \u00E7\u0131k\u0131\u015F', '1:2', '\u0130nce', '93\u00B0C', '28 sn'],
-    tip: 'Ekstraksiyon a\u015F\u0131r\u0131ya ka\u00E7arsa bile k\u0131r\u0131lganla\u015Fmaz \u2014 ACME espressoda affedicidir.' },
-  { vals: ['30 g', '500 g', '1:16', 'Kal\u0131n', '95\u00B0C', '4:00'],
-    tip: 'Bask\u0131dan \u00F6nce y\u00FCzeydeki kabu\u011Fu ka\u015F\u0131kla al \u2014 fincan belirgin \u015Fekilde temizlenir.' },
-  { vals: ['16 g', 'Hazne dolusu', '\u2014', 'Orta-ince', 'K\u0131s\u0131k ate\u015F', '~5 dk'],
-    tip: 'F\u0131\u015F\u0131rdama ba\u015Flad\u0131\u011F\u0131 anda ocaktan al \u2014 ac\u0131l\u0131k tam o e\u015Fikte ba\u015Flar.' },
-  { vals: ['60 g', '1 L', '1:16', 'Kal\u0131n', 'Oda s\u0131cakl\u0131\u011F\u0131', '18\u201324 sa'],
-    tip: 'Konsantreyi buzlu suyla 1:1 a\u00E7 \u2014 do\u011Fal tatl\u0131l\u0131k \u015Fekersiz ta\u015F\u0131r.' }
+const f=n=>n.toLocaleString('tr-TR')+' ₺';
+const GR=["Whole Bean","Paper Filter","Metal Filter","V60","Chemex","Aeropress","French Press","Moka Pot","Turkish Coffee","Cold Brew"];
+const DT=[
+  ["Origin","Guatemala","Huehuetenango — one of Guatemala's premier growing regions with ideal conditions for specialty coffee."],
+  ["Region","Huehuetenango","Nestled in western highlands, protected by dry hot winds enabling cultivation up to 2,000 masl."],
+  ["Producer","Smallholder Farms","Sourced from a rotating selection of partner farms, each bringing microclimate nuance to the blend."],
+  ["Variety","Caturra, Bourbon, Catuai","Traditional Central American varieties prized for their sweetness and body."],
+  ["Process","Washed","Fruit removed before drying, yielding a clean, bright cup that lets terroir shine."],
+  ["Elevation","1500–1900 masl","Cooler temps at altitude produce denser beans with more complex sugars."],
+  ["Harvest","2025","Fresh 2025 harvest, sourced directly from our partner farms."],
+  ["Roast Level","Medium","Balanced development — enough body and sweetness while preserving fruity notes."]
 ];
-const BREW_LABELS = ['Doz', 'Su', 'Oran', '\u00D6\u011F\u00FCt\u00FCm', 'S\u0131cakl\u0131k', 'S\u00FCre'];
+const BW={
+  "Espresso":{r:"1:2",t:"93°C",d:"26–30s",g:"Fine",dose:"18g",out:"36–40g"},
+  "V60":{r:"1:16",t:"94°C",d:"2:30–3:00",g:"Medium",dose:"15g",out:"240g"},
+  "Chemex":{r:"1:16",t:"94°C",d:"4:30–5:00",g:"Medium",dose:"32g",out:"500g"},
+  "Aeropress":{r:"1:16",t:"94°C",d:"2:00",g:"Medium-Fine",dose:"15g",out:"240g"},
+  "Moccamaster":{r:"1:16.5",t:"94°C",d:"4–5:00",g:"Medium",dose:"60g",out:"1L"},
+};
+const RL=[
+  {n:"Ethiopia Diima Lalesa #1",p:1050,tg:"New Season",tc:"#4d7c0f",ts:"Jasmine, Peach, Bergamot",img:"https://www.petracoffee.com/cdn/shop/files/diiama_lalesa_web.jpg?v=1763718155&width=600"},
+  {n:"Guatemala La Colina",p:750,tg:null,ts:"Honey, Blueberry, Jammy",img:"https://www.petracoffee.com/cdn/shop/files/la_colina_web.jpg?v=1763718136&width=600"},
+  {n:"Etiyopya Kelloo Bensa Bombe #3",p:1050,tg:null,ts:"Blackcurrant Jam, Walnut, Tea-like",img:"https://www.petracoffee.com/cdn/shop/files/Petra_yeni_web_dukkan_gorsel_e23fd67a-7bcf-48c6-8ed0-2fbd15e62f6b.jpg?v=1767788994&width=600"},
+  {n:"Bildimoo Bensa Bombe #4",p:1150,tg:"New Season",tc:"#4d7c0f",ts:"Tropical Fruit, Floral, Complex",img:"https://www.petracoffee.com/cdn/shop/files/Petra_yeni_web_dukkan_gorsel_4f30be93-430d-4cf8-a150-e294faf9fafa.jpg?v=1774430478&width=600"},
+];
 
-function setBrew(i, btn) {
-  document.querySelectorAll('.brew-tab').forEach(b => b.setAttribute('aria-selected', 'false'));
-  if (btn) btn.setAttribute('aria-selected', 'true');
-  document.getElementById('brew-panel').innerHTML = BREW[i].vals.map((v, j) =>
-    '<div class="brew-cell"><span class="label">' + BREW_LABELS[j] + '</span><span class="val">' + v + '</span></div>'
-  ).join('');
-  document.getElementById('brew-tip').textContent = BREW[i].tip;
+let cQ=1,cGr="Whole Bean",cBr="Espresso",cSize='250';
+
+// Prices — agreed model: 250g list (no discount), 500g flat −10%, 2.5 kg tiered
+const P250=675;
+const P500=1215, P500C=1350;       // 2× 250g = 1.350 ₺ → −10%
+const P2500C=6750;                 // 10× 250g list price
+const tier=q=>q>=4?20:q>=2?15:10;  // 2.5 kg ladder: 1 → −10% · 2 → −15% · 4 → −20%
+const p2500=q=>Math.round(P2500C*(1-tier(q)/100));
+
+// ===== SIZE SELECTION =====
+function selSize(s){
+  cSize=s;
+  cQ=1;
+  document.getElementById('qVal').value=1;
+  document.getElementById('card250').classList.toggle('on',s==='250');
+  document.getElementById('card500').classList.toggle('on',s==='500');
+  document.getElementById('card2500').classList.toggle('on',s==='2500');
+  document.getElementById('upgradeNudge').classList.remove('vis');
+  updCart();
 }
-setBrew(0, document.querySelector('.brew-tab'));
 
-render();
+// ===== QUANTITY =====
+function chgQ(d){
+  const cap=cSize==='2500'?6:10;
+  cQ=Math.max(1,Math.min(cap,cQ+d));
+  document.getElementById('qVal').value=cQ;
+  updCart();
+}
+
+const FREE_SHIP=1650;
+
+function updShip(total){
+  const row=document.getElementById('shipRow');
+  const txt=document.getElementById('shipTxt');
+  if(total>=FREE_SHIP){
+    row.className='ship-row done';
+    txt.textContent='Ücretsiz kargo';
+  }else{
+    row.className='ship-row';
+    txt.textContent=(FREE_SHIP-total).toLocaleString('tr-TR')+' ₺ daha — ücretsiz kargo';
+  }
+}
+
+function updCart(){
+  let total,label,save=0;
+  const nudge=document.getElementById('upgradeNudge');
+  const unText=document.getElementById('unText');
+  const unCta=document.getElementById('unCta');
+
+  if(cSize==='2500'){
+    const unit=p2500(cQ);
+    total=unit*cQ;
+    save=(P2500C-unit)*cQ;
+    label=cQ+'× ACME 2.5 kg Stok Paketi';
+    document.getElementById('qInfo').textContent=cQ+' paket · '+(cQ*2.5).toLocaleString('tr-TR')+' kg';
+    nudge.classList.remove('vis');
+
+  }else if(cSize==='500'){
+    total=P500*cQ;
+    save=(P500C-P500)*cQ;
+    label=cQ+'× ACME 500g Refil';
+    document.getElementById('qInfo').textContent=cQ+' bag'+(cQ>1?'s':'')+' · '+(cQ*500)+'g';
+    if(cQ>=3){
+      unText.innerHTML=`<strong>5 refil = ${f(P500*5)}</strong> — <strong>Stok Paketi</strong> ile 2.5 kg aynı fiyat, tek paket. 2 pakette <span class="un-save">−15%</span>'e iner.`;
+      unCta.onclick=()=>selSize('2500');
+      unCta.textContent='Stok Paketi →';
+      nudge.classList.add('vis');
+    }else{
+      nudge.classList.remove('vis');
+    }
+
+  }else{
+    // 250g — list price, no discount
+    total=P250*cQ;
+    label=cQ+'× ACME 250g';
+    document.getElementById('qInfo').textContent=cQ+' bag'+(cQ>1?'s':'')+' · '+(cQ*250)+'g';
+
+    if(cQ===2){
+      unText.innerHTML=`<strong>2 torba = ${f(total)}</strong> — 500g Refil <strong>${f(P500)}</strong>, tek ambalaj. <span class="un-save">${f(total-P500)} tasarruf</span>.`;
+      unCta.onclick=()=>selSize('500');
+      unCta.textContent='Refil\'e geç →';
+      nudge.classList.add('vis');
+    }else if(cQ>=3&&cQ<6){
+      const rq=Math.floor(cQ/2),rem=cQ%2,alt=rq*P500+rem*P250;
+      unText.innerHTML=`<strong>${cQ} torba = ${f(total)}</strong> — ${rq}× Refil${rem?' + 1 torba':''} = <strong>${f(alt)}</strong>. <span class="un-save">${f(total-alt)} tasarruf</span>.`;
+      unCta.onclick=()=>{selSize('500');cQ=rq;document.getElementById('qVal').value=cQ;updCart();};
+      unCta.textContent='Refil\'e geç →';
+      nudge.classList.add('vis');
+    }else if(cQ>=6){
+      const path250cost=10*P250;
+      const stokSaving=path250cost-p2500(1);
+      unText.innerHTML=`Bu kadar alıyorsanız: <strong>10 torba = ${f(path250cost)}</strong> — <strong>Stok Paketi</strong> ile 2.5 kg sadece <strong>${f(p2500(1))}</strong>. <span class="un-save">${f(stokSaving)} tasarruf</span>.`;
+      unCta.onclick=()=>selSize('2500');
+      unCta.textContent='Stok Paketi →';
+      nudge.classList.add('vis');
+    }else{
+      nudge.classList.remove('vis');
+    }
+  }
+
+  // ── 2.5 kg ladder: evolving pill (Seçenek 1) + eşik fısıltısı (Seçenek 3) ──
+  const tq=cSize==='2500'?cQ:1, t=tier(tq), unit2500=p2500(tq);
+  const pill=document.getElementById('tierPill');
+  if(pill.textContent!=='−'+t+'%'){
+    pill.textContent='−'+t+'%';
+    pill.classList.add('bump');
+    setTimeout(()=>pill.classList.remove('bump'),200);
+    if(cSize==='2500'){
+      const sumRow=document.querySelector('.cart-sum');
+      sumRow.style.animation='none';void sumRow.offsetWidth;
+      sumRow.style.animation='tflash .9s ease';
+    }
+  }
+  document.getElementById('price2500').textContent=f(unit2500);
+  document.getElementById('kg2500').textContent=Math.round(unit2500/2.5).toLocaleString('tr-TR')+' ₺ / kg';
+  document.getElementById('qPlus').disabled=cQ>=(cSize==='2500'?6:10);
+  const tw=document.getElementById('tierWhisper'),twT=document.getElementById('twTxt');
+  if(cSize==='2500'){
+    tw.classList.add('vis');
+    if(cQ>=6){twT.innerHTML='Sepet 15 kg\'a ulaştı — bu hacimde <a href="https://www.petracoffee.com/pages/toptan-alim-basvuru">Toptan Alım</a> daha mantıklı →';}
+    else if(cQ>=4){twT.innerHTML='En iyi fiyattasınız — <strong>−20%</strong>. Daha fazlası mı gerekiyor? <a href="https://www.petracoffee.com/pages/toptan-alim-basvuru">Toptan Alım →</a>';}
+    else if(cQ>=2){twT.innerHTML=(4-cQ)+' paket daha → <strong>−20%</strong>';}
+    else{twT.innerHTML='1 paket daha → <strong>−15%</strong>';}
+  }else{
+    tw.classList.remove('vis');
+  }
+
+  const saveStr=save>0?'Tasarruf: '+f(save):'';
+  document.getElementById('sumLB').textContent=label+' · '+cGr;
+  document.getElementById('sumSB').textContent=saveStr;
+  document.getElementById('sumTB').textContent=f(total);
+  updShip(total);
+}
+
+// ===== GRIND =====
+let gOpen=false;
+function tG(e){
+  if(e)e.stopPropagation();
+  gOpen=!gOpen;
+  document.getElementById('gD').classList.toggle('op',gOpen);
+  document.getElementById('gT').classList.toggle('op',gOpen);
+}
+function sG(g,e){
+  if(e)e.stopPropagation();
+  cGr=g;document.getElementById('gL').textContent=g;
+  gOpen=false;
+  document.getElementById('gD').classList.remove('op');
+  document.getElementById('gT').classList.remove('op');
+  rG();updCart();
+}
+function rG(){document.getElementById('gD').innerHTML=GR.map(g=>'<div class="go'+(g===cGr?' on':'')+'" onclick="sG(\''+g+'\',event)">'+( g===cGr?'<span style="margin-right:7px;font-size:9px">●</span>':'')+g+'</div>').join('')}
+
+// ===== IMAGES =====
+function swI(i){document.querySelectorAll('.img-main img').forEach((m,x)=>m.classList.toggle('hid',x!==i));document.querySelectorAll('.thumb').forEach((t,x)=>t.classList.toggle('on',x===i))}
+
+// ===== DETAILS =====
+function rD(){document.getElementById('dL').innerHTML=DT.map(([l,v,d])=>'<div class="dr" onclick="this.classList.toggle(\'open\')"><div class="drh"><span class="dl">'+l+'</span><span class="dval" contenteditable="true">'+v+'<svg class="chevron" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg></span></div><div class="dx" contenteditable="true">'+d+'</div></div>').join('')}
+
+// ===== BREW =====
+function rBT(){document.getElementById('bT').innerHTML=Object.keys(BW).map(k=>'<button class="bt'+(k===cBr?' on':'')+'" onclick="sBr(\''+k+'\')">'+k+'</button>').join('')}
+function rBG(){const d=BW[cBr];document.getElementById('bG').innerHTML=[{l:"Dose",v:d.dose},{l:"Output",v:d.out},{l:"Ratio",v:d.r},{l:"Brew Time",v:d.d},{l:"Temperature",v:d.t},{l:"Grind Size",v:d.g}].map(i=>'<div class="bc"><div class="bcl">'+i.l+'</div><div class="bcv" contenteditable="true">'+i.v+'</div></div>').join('')}
+function sBr(k){cBr=k;rBT();rBG()}
+
+// ===== RELATED =====
+function rR(){document.getElementById('rG').innerHTML=RL.map(r=>'<div class="rc"><div class="rcw"><img src="'+r.img+'" alt="'+r.n+'" loading="lazy">'+(r.tg?'<div class="rtg" style="background:'+r.tc+'">'+r.tg+'</div>':'')+'</div><div class="rn" contenteditable="true">'+r.n+'</div><div class="rtst" contenteditable="true">'+r.ts+'</div><div class="rpr">From '+f(r.p)+'</div></div>').join('')}
+
+// ===== ATC =====
+function aC(){
+  const b=document.getElementById('aBtnB');
+  b.classList.add('ok');
+  b.innerHTML='<span style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8.5l3.5 3.5 6.5-7" style="stroke-dasharray:24;animation:ck .4s ease forwards"/></svg>Added to Cart</span>';
+  setTimeout(()=>{b.classList.remove('ok');updCart();},2000);
+}
+
+// Close grind on outside click
+document.addEventListener('click',e=>{if(!e.target.closest('.gw')){gOpen=false;document.getElementById('gD').classList.remove('op');document.getElementById('gT').classList.remove('op')}});
+
+// INIT
+document.getElementById('roastDate').textContent=new Date(Date.now()-2*864e5).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+rG();rD();rBT();rBG();rR();updCart();
 </script>
 </body>
 </html>
