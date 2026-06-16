@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACME — Petra Roasting Co.</title>
+<style>
+  :root {
+    --paper: #f3eee4;
+    --paper-2: #ece5d7;
+    --ink: #161412;
+    --ink-soft: #6f675c;
+    --rule: #d9d2c6;
+    --rule-dark: #b8af9f;
+    --mono: 'Courier New', Courier, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; animation: none !important; }
+  }
+  body {
+    font-family: var(--mono);
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  a { color: var(--ink); }
+  button { font-family: var(--mono); cursor: pointer; }
+  button:focus-visible, select:focus-visible, a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--ink); outline-offset: 2px;
+  }
+  .label {
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ───── top bar ───── */
+  .topbar {
+    border-bottom: 1px solid var(--ink);
+    padding: 14px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--paper);
+  }
+  .wordmark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .wordmark span { font-size: 15px; font-weight: 700; letter-spacing: 0.32em; }
+  .moon { width: 16px; height: 16px; }
+  .topbar nav { display: flex; gap: 26px; }
+  .topbar nav a { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; }
+  .topbar nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .crumb { padding: 14px 32px; font-size: 11px; color: var(--ink-soft); border-bottom: 1px solid var(--rule); }
+  .crumb a { color: var(--ink-soft); text-decoration: none; }
+  .crumb a:hover { color: var(--ink); }
+
+  /* ───── main grid ───── */
+  .main {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    max-width: 1180px; margin: 0 auto;
+  }
+  .visual {
+    border-right: 1px solid var(--rule);
+    padding: 48px;
+    display: flex; align-items: flex-start; justify-content: center;
+  }
+  .visual-inner { position: sticky; top: 48px; width: 100%; max-width: 460px; }
+  .bag-frame {
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+    aspect-ratio: 4 / 5;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 18px; position: relative;
+  }
+  .bag-frame svg { width: 84px; height: 84px; }
+  .bag-frame .bag-name { font-size: 26px; font-weight: 700; letter-spacing: 0.4em; margin-left: 0.4em; }
+  .bag-frame .bag-sub { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft); }
+  .photo-note {
+    position: absolute; bottom: 12px; left: 0; right: 0; text-align: center;
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rule-dark);
+  }
+  .roast-stamp {
+    margin-top: 14px; display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--ink-soft);
+    border-bottom: 1px solid var(--rule); padding-bottom: 10px;
+  }
+  .roast-stamp strong { color: var(--ink); font-weight: 700; }
+
+  /* ───── buy column ───── */
+  .buy { padding: 48px 48px 64px; }
+  .tagline-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .tag {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    border: 1px solid var(--ink); padding: 3px 10px;
+  }
+  h1 { font-size: 52px; font-weight: 700; letter-spacing: 0.14em; line-height: 1; margin-bottom: 14px; }
+  .tagline { font-size: 14px; color: var(--ink-soft); max-width: 46ch; margin-bottom: 22px; }
+  .notes { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .note-pill {
+    font-size: 11px; letter-spacing: 0.08em;
+    background: var(--ink); color: var(--paper);
+    padding: 4px 14px; border-radius: 999px;
+  }
+  .notes-line { font-size: 12.5px; color: var(--ink-soft); font-style: italic; margin-bottom: 26px; max-width: 48ch; }
+
+  .meta-line {
+    border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule);
+    padding: 10px 0; margin-bottom: 28px;
+    display: flex; flex-wrap: wrap; gap: 6px 22px;
+    font-size: 11px; color: var(--ink-soft);
+  }
+  .meta-line b { color: var(--ink); font-weight: 700; }
+
+  /* size cards */
+  .sizes { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-bottom: 10px; }
+  .size-card {
+    border: 1px solid var(--rule-dark); background: transparent;
+    padding: 14px 12px 12px; text-align: left; position: relative;
+    transition: border-color 0.15s ease;
+    display: flex; flex-direction: column; gap: 3px; min-height: 122px;
+  }
+  .size-card:hover { border-color: var(--ink); }
+  .size-card[aria-pressed="true"] { border: 2px solid var(--ink); padding: 13px 11px 11px; }
+  .size-card .sz { font-size: 16px; font-weight: 700; }
+  .size-card .sz-sub { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+  .size-card .sz-price { font-size: 13px; margin-top: auto; }
+  .size-card .sz-compare { font-size: 11px; color: var(--ink-soft); text-decoration: line-through; margin-left: 6px; }
+  .size-card .sz-kg { font-size: 10px; color: var(--ink-soft); }
+  .adv-pill {
+    position: absolute; top: -9px; right: 8px;
+    font-size: 9.5px; letter-spacing: 0.08em;
+    background: var(--ink); color: var(--paper);
+    padding: 2px 9px; border-radius: 999px;
+    transition: transform 0.15s ease;
+  }
+  .adv-pill.bump { transform: scale(1.12); }
+
+  /* stepper + nudge */
+  .qty-row { display: flex; align-items: center; gap: 14px; margin: 18px 0 0; }
+  .step-btn {
+    width: 38px; height: 38px; border: 1px solid var(--ink); background: transparent;
+    font-size: 16px; line-height: 1;
+  }
+  .step-btn:hover { background: var(--ink); color: var(--paper); }
+  .qty-num { min-width: 26px; text-align: center; font-size: 16px; font-weight: 700; }
+  .qty-label { font-size: 11px; color: var(--ink-soft); letter-spacing: 0.1em; text-transform: uppercase; }
+  .nudge {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--rule);
+    font-size: 12.5px; color: var(--ink-soft);
+    display: none;
+  }
+  .nudge.show { display: block; }
+  .nudge a { color: var(--ink); }
+
+  /* grind */
+  .field { margin: 26px 0 0; }
+  .field .label { display: block; margin-bottom: 8px; }
+  select {
+    width: 100%; font-family: var(--mono); font-size: 13px;
+    background: transparent; border: 1px solid var(--ink);
+    padding: 11px 12px; color: var(--ink); border-radius: 0;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23161412'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+
+  /* CTA */
+  .cta {
+    width: 100%; margin-top: 26px;
+    background: var(--ink); color: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 17px 18px;
+    font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: opacity 0.15s ease;
+  }
+  .cta:hover { opacity: 0.88; }
+  .cta .cta-total { font-weight: 700; letter-spacing: 0.04em; font-size: 15px; }
+  .ship-line { margin-top: 12px; font-size: 11.5px; color: var(--ink-soft); display: flex; justify-content: space-between; }
+  .ship-line .ok { color: var(--ink); font-weight: 700; }
+
+  /* details accordion */
+  .details-block { margin-top: 36px; border-top: 1px solid var(--ink); }
+  details { border-bottom: 1px solid var(--rule); }
+  summary {
+    list-style: none; cursor: pointer; padding: 13px 2px;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; font-size: 14px; }
+  details[open] summary::after { content: '–'; }
+  .dt-grid { padding: 4px 2px 18px; display: grid; grid-template-columns: 140px 1fr; gap: 6px 18px; font-size: 12.5px; }
+  .dt-grid dt { color: var(--ink-soft); }
+  .dt-grid dd { font-weight: 700; }
+  .dt-note { grid-column: 1 / -1; font-size: 11.5px; color: var(--ink-soft); font-style: italic; padding-top: 8px; border-top: 1px solid var(--rule); margin-top: 6px; }
+  .detail-prose { padding: 4px 2px 18px; font-size: 12.5px; color: var(--ink-soft); max-width: 52ch; }
+
+  /* ───── lower sections ───── */
+  .section { max-width: 1180px; margin: 0 auto; padding: 64px 48px; border-top: 1px solid var(--ink); }
+  .section-head { margin-bottom: 32px; }
+  .section-head h2 { font-size: 24px; font-weight: 700; letter-spacing: 0.1em; margin-top: 6px; }
+  .desc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  .desc-grid p { margin-bottom: 18px; max-width: 54ch; }
+  .desc-close { font-style: italic; color: var(--ink-soft); border-left: 2px solid var(--ink); padding-left: 16px; }
+
+  /* brew tabs */
+  .brew-tabs { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--ink); margin-bottom: 0; }
+  .brew-tab {
+    flex: 1; min-width: 110px; background: transparent; border: none;
+    border-right: 1px solid var(--rule-dark);
+    padding: 12px 8px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .brew-tab:last-child { border-right: none; }
+  .brew-tab[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+  .brew-panel {
+    border: 1px solid var(--ink); border-top: none;
+    display: grid; grid-template-columns: repeat(6, minmax(0,1fr));
+  }
+  .brew-cell { padding: 18px 14px; border-right: 1px solid var(--rule); }
+  .brew-cell:last-child { border-right: none; }
+  .brew-cell .label { display: block; margin-bottom: 6px; }
+  .brew-cell .val { font-size: 15px; font-weight: 700; }
+  .brew-tip { margin-top: 14px; font-size: 12.5px; color: var(--ink-soft); font-style: italic; }
+
+  /* related */
+  .rel-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+  .rel-card { border: 1px solid var(--rule-dark); padding: 0; text-decoration: none; display: block; transition: border-color 0.15s ease; }
+  .rel-card:hover { border-color: var(--ink); }
+  .rel-thumb {
+    aspect-ratio: 5 / 4; background: var(--paper-2); border-bottom: 1px solid var(--rule-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rule-dark);
+  }
+  .rel-body { padding: 16px; }
+  .rel-body h3 { font-size: 14px; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .rel-body .rel-notes { font-size: 12px; color: var(--ink-soft); font-style: italic; margin-bottom: 10px; min-height: 38px; }
+  .rel-body .rel-price { font-size: 12px; }
+
+  footer {
+    border-top: 1px solid var(--ink); margin-top: 0;
+    padding: 28px 48px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+  }
+
+  @media (max-width: 920px) {
+    .main { grid-template-columns: 1fr; }
+    .visual { border-right: none; border-bottom: 1px solid var(--rule); padding: 32px; }
+    .visual-inner { position: static; }
+    .buy { padding: 32px 24px 48px; }
+    h1 { font-size: 40px; }
+    .desc-grid { grid-template-columns: 1fr; gap: 0; }
+    .brew-panel { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .brew-cell:nth-child(3n) { border-right: none; }
+    .brew-cell { border-bottom: 1px solid var(--rule); }
+    .rel-grid { grid-template-columns: 1fr; }
+    .section { padding: 48px 24px; }
+    .topbar, .crumb { padding-left: 24px; padding-right: 24px; }
+    footer { padding: 24px; }
+  }
+  @media (max-width: 560px) {
+    .sizes { grid-template-columns: 1fr; }
+    .size-card { min-height: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="wordmark" href="#" aria-label="Petra Roasting Co. ana sayfa">
+    <svg class="moon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="#161412"/>
+    </svg>
+    <span>PETRA</span>
+  </a>
+  <nav aria-label="Ana menü">
+    <a href="#">Dükkan</a>
+    <a href="#">Kafeler</a>
+    <a href="#">Jurnal</a>
+    <a href="#">Toptan Alım</a>
+  </nav>
+</header>
+
+<div class="crumb"><a href="#">Dükkan</a> / <a href="#">Kahveler</a> / ACME</div>
+
+<main class="main">
+
+  <!-- ───────── VISUAL ───────── -->
+  <div class="visual">
+    <div class="visual-inner">
+      <div class="bag-frame">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="none" stroke="#161412" stroke-width="1"/>
+        </svg>
+        <div class="bag-name">ACME</div>
+        <div class="bag-sub">Petra Roasting Co. — Istanbul</div>
+        <div class="photo-note">[ ACME ürün fotoğrafı — gerçek görsel eklenecek ]</div>
+      </div>
+      <div class="roast-stamp">
+        <span>Kavrum tarihi: <strong id="roast-date">—</strong></span>
+        <span>2 iş günü içinde kargoda</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────── BUY ───────── -->
+  <div class="buy">
+    <div class="tagline-row">
+      <span class="tag">Single origin</span>
+      <span class="tag">Açık–orta kavrum</span>
+      <span class="tag">Dönüşümlü lot</span>
+    </div>
+
+    <h1>ACME</h1>
+    <p class="tagline">Petra'nın her güne eşlik eden single origin'i — Güney Amerika'dan, zenginliği ve dengesi için seçilmiş, sezonla birlikte dönen bir lot.</p>
+
+    <div class="notes" aria-label="Tat notaları">
+      <span class="note-pill">Çikolata</span>
+      <span class="note-pill">Meyve</span>
+      <span class="note-pill">Dengeli</span>
+    </div>
+    <p class="notes-line">Çikolatamsı bir gövdeyle açılıp sessiz bir meyve tatlılığıyla biten, her sabaha uyan bir fincan.</p>
+
+    <div class="meta-line">
+      <span>Köken: <b>Güney Amerika (dönüşümlü)</b></span>
+      <span>Demleme: <b>Espresso &amp; filtre</b></span>
+      <span>İşleme: <b>Lota göre değişir</b></span>
+    </div>
+
+    <!-- size cards -->
+    <span class="label" style="display:block; margin-bottom:10px;">Boy seç</span>
+    <div class="sizes" role="group" aria-label="Paket boyu">
+      <button class="size-card" id="card-250" aria-pressed="true" onclick="setSize(250)">
+        <span class="sz">250 g</span>
+        <span class="sz-sub">Keşif boyu</span>
+        <span class="sz-price"><span id="p-250">675 ₺</span></span>
+      </button>
+      <button class="size-card" id="card-500" aria-pressed="false" onclick="setSize(500)">
+        <span class="adv-pill">%10 avantaj</span>
+        <span class="sz">500 g</span>
+        <span class="sz-sub">Haftalık ritim</span>
+        <span class="sz-price">1.215 ₺<span class="sz-compare">1.350 ₺</span></span>
+      </button>
+      <button class="size-card" id="card-2500" aria-pressed="false" onclick="setSize(2500)">
+        <span class="adv-pill" id="tier-pill">%10 avantaj</span>
+        <span class="sz">2,5 kg</span>
+        <span class="sz-sub">Stok paketi</span>
+        <span class="sz-price"><span id="p-2500">6.075 ₺</span><span class="sz-compare">6.750 ₺</span></span>
+        <span class="sz-kg" id="kg-2500">2.430 ₺ / kg</span>
+      </button>
+    </div>
+
+    <!-- quantity + nudge -->
+    <div class="qty-row">
+      <span class="qty-label">Adet</span>
+      <button class="step-btn" onclick="setQty(-1)" aria-label="Adedi azalt">−</button>
+      <span class="qty-num" id="qty" aria-live="polite">1</span>
+      <button class="step-btn" onclick="setQty(1)" aria-label="Adedi artır">+</button>
+    </div>
+    <p class="nudge" id="nudge" aria-live="polite"></p>
+
+    <!-- grind -->
+    <div class="field">
+      <label class="label" for="grind">Öğütüm</label>
+      <select id="grind">
+        <option>Çekirdek — öğütülmemiş</option>
+        <option>Espresso</option>
+        <option>Moka Pot</option>
+        <option>V60</option>
+        <option>Chemex</option>
+        <option>Aeropress</option>
+        <option>French Press</option>
+        <option>Filtre kahve makinesi</option>
+        <option>Cold Brew</option>
+        <option>Türk kahvesi</option>
+      </select>
+    </div>
+
+    <!-- CTA -->
+    <button class="cta" onclick="addToCart()">
+      <span>Sepete Ekle</span>
+      <span class="cta-total" id="cta-total">675 ₺</span>
+    </button>
+    <p class="ship-line"><span id="ship-msg">Ücretsiz kargo için 575 ₺ daha</span><span class="label">Kargo eşiği 1.250 ₺</span></p>
+
+    <!-- details -->
+    <div class="details-block">
+      <details>
+        <summary>Kahve Detayları</summary>
+        <dl class="dt-grid">
+          <dt>Köken</dt><dd>Brezilya — Sul de Minas</dd>
+          <dt>Üretici</dt><dd>Fazenda Santa Clara</dd>
+          <dt>Varyete</dt><dd>Yellow Bourbon, Catuai</dd>
+          <dt>İşleme</dt><dd>Natural — kurutma yataklarında, meyvesiyle</dd>
+          <dt>Rakım</dt><dd>1.100–1.250 m</dd>
+          <dt>Hasat</dt><dd>2025/26</dd>
+          <dt>Kavrum profili</dt><dd>Açık–orta</dd>
+          <div class="dt-note">Köken sezonla birlikte döner; bu tablo her lotta güncellenir. Değişmeyen tek şey profil: zengin, çikolatamsı, dengeli.</div>
+        </dl>
+      </details>
+      <details>
+        <summary>Kargo &amp; Tazelik</summary>
+        <p class="detail-prose">Her sipariş kavrumdan sonraki ilk günlerde, tek yönlü valfli torbalarda yola çıkar. 1.250 ₺ ve üzeri siparişlerde kargo bizden. Kavrum tarihi her torbanın üzerinde yazar — raf değil, fırın mantığı.</p>
+      </details>
+      <details>
+        <summary>Stok Paketi &amp; Toptan</summary>
+        <p class="detail-prose">2,5 kg stok paketi evde çok tüketenler ve küçük ofisler için: tek pakette %10, 2 pakette %15, 4 pakette %20 avantaj. Daha fazlası gerekiyorsa — bar, restoran, ofis aboneliği — <a href="#">Toptan Alım</a> programımız tam bunun için var.</p>
+      </details>
+    </div>
+  </div>
+</main>
+
+<!-- ───────── DESCRIPTION ───────── -->
+<section class="section">
+  <div class="section-head">
+    <span class="label">Hikâye</span>
+    <h2>Her sezon yeniden sorulan bir soru</h2>
+  </div>
+  <div class="desc-grid">
+    <div>
+      <p>ACME basit bir soruyla başladı: şu anda elimize geçebilecek en iyi Güney Amerika kahvesi hangisi? Bugün hâlâ aynı soru — her sezon yeniden soruluyor.</p>
+      <p>İsim, tek bir çiftliği ya da sabit bir formülü işaret etmiyor. ACME, Petra'nın And Dağları ve ötesinden, o an en karakterli lota verdiği sözün adı. Sabit kalan, profil: zengin ve çikolatamsı bir gövde, yumuşak bir asidite, damakta kalan bir tatlılık. Değişen tek şey, geldiği yer.</p>
+    </div>
+    <div>
+      <p>Espressoda yuvarlak ve affedici; V60'ta, French Press'te, Moka Pot'ta da kendi evinde. Henüz specialty kahveyi sevdiğini bilmeyen biri için demliyorsan, buradan başla.</p>
+      <p class="desc-close">Her demleme yönteminde çalışır. Küçük hataları affeder. Her sabah aynı şekilde demleyip yine de bıkmayacağın bir kahve.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── BREW GUIDE ───────── -->
+<section class="section">
+  <div class="section-head">
+    <span class="label">Demleme rehberi</span>
+    <h2>ACME'yi nasıl demlemeli</h2>
+  </div>
+  <div class="brew-tabs" role="tablist" aria-label="Demleme yöntemleri">
+    <button class="brew-tab" role="tab" aria-selected="true" onclick="setBrew(0,this)">V60</button>
+    <button class="brew-tab" role="tab" aria-selected="false" onclick="setBrew(1,this)">Espresso</button>
+    <button class="brew-tab" role="tab" aria-selected="false" onclick="setBrew(2,this)">French Press</button>
+    <button class="brew-tab" role="tab" aria-selected="false" onclick="setBrew(3,this)">Moka Pot</button>
+    <button class="brew-tab" role="tab" aria-selected="false" onclick="setBrew(4,this)">Cold Brew</button>
+  </div>
+  <div class="brew-panel" id="brew-panel"></div>
+  <p class="brew-tip" id="brew-tip"></p>
+</section>
+
+<!-- ───────── RELATED ───────── -->
+<section class="section">
+  <div class="section-head">
+    <span class="label">ACME'yi sevdiysen</span>
+    <h2>Sıradaki fincan</h2>
+  </div>
+  <div class="rel-grid">
+    <a class="rel-card" href="#">
+      <div class="rel-thumb">[ Görsel ]</div>
+      <div class="rel-body">
+        <h3>Guatemala Abraço</h3>
+        <p class="rel-notes">Fındık ve vanilyanın yumuşak sıcaklığıyla biten, cömert bir fincan.</p>
+        <p class="rel-price">750 ₺'den başlayan</p>
+      </div>
+    </a>
+    <a class="rel-card" href="#">
+      <div class="rel-thumb">[ Görsel ]</div>
+      <div class="rel-body">
+        <h3>Etiyopya Bildimoo Bensa Bombe #4</h3>
+        <p class="rel-notes">Limon kabuğu ferahlığı, fındıkla yere basan dolgun bir gövde.</p>
+        <p class="rel-price">1.150 ₺'den başlayan</p>
+      </div>
+    </a>
+    <a class="rel-card" href="#">
+      <div class="rel-thumb">[ Görsel ]</div>
+      <div class="rel-body">
+        <h3>3'lü Etiyopya Tadım Paketi</h3>
+        <p class="rel-notes">Evde cupping: üç lot, üç ayrı karakter, yan yana.</p>
+        <p class="rel-price">780 ₺</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span>Petra Roasting Co. — Istanbul</span>
+  <span>Kaçık Keçi Gıda San. ve Tic. A.Ş.</span>
+</footer>
+
+<script>
+/* ════════ pricing model ════════
+   250g  : 675 ₺ — liste, indirim yok
+   500g  : 1.350 → 1.215 ₺ (sabit %10, adetten bağımsız)
+   2,5kg : 6.750 ₺ liste — kademeli: 1 paket %10 · 2+ %15 · 4+ %20
+   Üretimde: fiyatlar ve kademeler Shopify metafield'larından gelir. */
+const PRICES = { 250: 675, 500: 1215 };
+const LIST_2500 = 6750;
+const SHIP_LIMIT = 1250;
+const fmtN = n => Math.round(n).toLocaleString('tr-TR');
+const fmt = n => fmtN(n) + ' \u20BA';
+const tier = q => q >= 4 ? 20 : q >= 2 ? 15 : 10;
+
+const state = { size: 250, qty: 1 };
+
+function setSize(s) {
+  state.size = s;
+  [250, 500, 2500].forEach(x =>
+    document.getElementById('card-' + x).setAttribute('aria-pressed', x === s ? 'true' : 'false')
+  );
+  render();
+}
+
+function setQty(d) {
+  state.qty = Math.max(1, state.qty + d);
+  render();
+}
+
+function unitPrice() {
+  if (state.size !== 2500) return PRICES[state.size];
+  return LIST_2500 * (1 - tier(state.qty) / 100);
+}
+
+function render() {
+  const q = state.qty;
+  const unit = unitPrice();
+  const total = unit * q;
+
+  document.getElementById('qty').textContent = q;
+  document.getElementById('cta-total').textContent = fmt(total);
+
+  /* — 2,5 kg kartı: evrilen rozet + canlı kg fiyatı (Seçenek 1) — */
+  const t = state.size === 2500 ? tier(q) : 10;
+  const per2500 = LIST_2500 * (1 - t / 100);
+  const pill = document.getElementById('tier-pill');
+  if (pill.textContent !== '%' + t + ' avantaj') {
+    pill.textContent = '%' + t + ' avantaj';
+    pill.classList.add('bump');
+    setTimeout(() => pill.classList.remove('bump'), 180);
+  }
+  document.getElementById('p-2500').textContent = fmt(per2500);
+  document.getElementById('kg-2500').textContent = fmtN(per2500 / 2.5) + ' \u20BA / kg';
+
+  /* — eşik fısıltısı: sadece 2,5 kg seçiliyken (Seçenek 3) — */
+  const nudge = document.getElementById('nudge');
+  if (state.size === 2500) {
+    nudge.classList.add('show');
+    if (q >= 4) {
+      nudge.innerHTML = 'En iyi fiyattas\u0131n \u2014 %20 avantaj. Daha fazlas\u0131 m\u0131 gerekiyor? <a href="#">Toptan Al\u0131m \u2192</a>';
+    } else if (q >= 2) {
+      nudge.textContent = (4 - q) + ' paket daha \u2192 %20';
+    } else {
+      nudge.textContent = '1 paket daha ekle \u2192 %15\u2019e ge\u00E7';
+    }
+  } else {
+    nudge.classList.remove('show');
+  }
+
+  /* — canlı kargo eşiği — */
+  const ship = document.getElementById('ship-msg');
+  if (total >= SHIP_LIMIT) {
+    ship.innerHTML = '<span class="ok">Kargo bizden \u2713</span>';
+  } else {
+    ship.textContent = '\u00DCcretsiz kargo i\u00E7in ' + fmt(SHIP_LIMIT - total) + ' daha';
+  }
+}
+
+function addToCart() {
+  /* Shopify entegrasyonu: variant id + quantity ile /cart/add.js */
+  const btn = document.querySelector('.cta span:first-child');
+  const old = btn.textContent;
+  btn.textContent = 'Sepete Eklendi \u2713';
+  setTimeout(() => { btn.textContent = old; }, 1600);
+}
+
+/* ════════ roast date (metafield placeholder: kavrum = bugün − 2 gün) ════════ */
+(function () {
+  const d = new Date(Date.now() - 2 * 864e5);
+  document.getElementById('roast-date').textContent =
+    d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+})();
+
+/* ════════ brew guide ════════ */
+const BREW = [
+  { vals: ['15 g', '250 g', '1:16', 'Orta-ince', '94\u00B0C', '2:45'],
+    tip: '\u0130lk 45 saniyede 50 g suyla \u00F6n \u0131slatma \u2014 \u00E7ikolata notalar\u0131 burada a\u00E7\u0131l\u0131r.' },
+  { vals: ['18 g', '36 g \u00E7\u0131k\u0131\u015F', '1:2', '\u0130nce', '93\u00B0C', '28 sn'],
+    tip: 'Ekstraksiyon a\u015F\u0131r\u0131ya ka\u00E7arsa bile k\u0131r\u0131lganla\u015Fmaz \u2014 ACME espressoda affedicidir.' },
+  { vals: ['30 g', '500 g', '1:16', 'Kal\u0131n', '95\u00B0C', '4:00'],
+    tip: 'Bask\u0131dan \u00F6nce y\u00FCzeydeki kabu\u011Fu ka\u015F\u0131kla al \u2014 fincan belirgin \u015Fekilde temizlenir.' },
+  { vals: ['16 g', 'Hazne dolusu', '\u2014', 'Orta-ince', 'K\u0131s\u0131k ate\u015F', '~5 dk'],
+    tip: 'F\u0131\u015F\u0131rdama ba\u015Flad\u0131\u011F\u0131 anda ocaktan al \u2014 ac\u0131l\u0131k tam o e\u015Fikte ba\u015Flar.' },
+  { vals: ['60 g', '1 L', '1:16', 'Kal\u0131n', 'Oda s\u0131cakl\u0131\u011F\u0131', '18\u201324 sa'],
+    tip: 'Konsantreyi buzlu suyla 1:1 a\u00E7 \u2014 do\u011Fal tatl\u0131l\u0131k \u015Fekersiz ta\u015F\u0131r.' }
+];
+const BREW_LABELS = ['Doz', 'Su', 'Oran', '\u00D6\u011F\u00FCt\u00FCm', 'S\u0131cakl\u0131k', 'S\u00FCre'];
+
+function setBrew(i, btn) {
+  document.querySelectorAll('.brew-tab').forEach(b => b.setAttribute('aria-selected', 'false'));
+  if (btn) btn.setAttribute('aria-selected', 'true');
+  document.getElementById('brew-panel').innerHTML = BREW[i].vals.map((v, j) =>
+    '<div class="brew-cell"><span class="label">' + BREW_LABELS[j] + '</span><span class="val">' + v + '</span></div>'
+  ).join('');
+  document.getElementById('brew-tip').textContent = BREW[i].tip;
+}
+setBrew(0, document.querySelector('.brew-tab'));
+
+render();
+</script>
+</body>
+</html>
